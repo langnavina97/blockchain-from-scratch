@@ -1,1 +1,0 @@
-# blockchain-from-scratch
