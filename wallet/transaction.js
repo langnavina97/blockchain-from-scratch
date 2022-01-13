@@ -1,4 +1,3 @@
-const { send } = require("express/lib/response");
 const ChainUtil = require("../chain-util");
 
 class Transaction {
