@@ -24,7 +24,6 @@ describe('Transaction', () => {
     });
 
     it('validates a valid transaction', () => {
-        console.log(transaction);
         expect(Transaction.verifyTransaction(transaction)).toBe(true);
     });
 

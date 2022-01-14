@@ -44,6 +44,15 @@ class P2pServer {
     messageHandler(socket) {
         socket.on('message', message => {
             const data = JSON.parse(message);
+            switch (data.type) {
+                case MESSAGE_TYPES.chain:
+                    this.blockchain.replaceChain(data.chain);
+                    break;
+                case MESSAGE_TYPES.transaction:
+                    this.transactionPool.updateOrAddTransaction(data.transaction);
+                    break;
+            }
+
             this.blockchain.replaceChain(data);
         });
     }
@@ -55,8 +64,20 @@ class P2pServer {
         }));
     }
 
+    sendTransaction(socket, transaction) {
+        socket.send(JSON.stringify(
+            {
+                type: MESSAGE_TYPES.transaction,
+                transaction
+            }));
+    }
+
     syncChains() {
         this.sockets.forEach(socket => this.sendChain(socket));
+    }
+
+    broadcastTransaction(transaction) {
+        this.sockets.forEach(socket => this.sendTransaction(socket, transaction));
     }
 
 }
